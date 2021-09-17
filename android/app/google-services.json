@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "848339876554",
+    "firebase_url": "https://multiapp-f0e1e-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "multiapp-f0e1e",
+    "storage_bucket": "multiapp-f0e1e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:848339876554:android:69671caa9e9d413a005233",
+        "android_client_info": {
+          "package_name": "com.talhaiqbal.chat_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "848339876554-b0ehsrl6g1jge7m6ohcpau5jkfaq8rhe.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.talhaiqbal.chat_app",
+            "certificate_hash": "12cbb2bebf181fd66130d0fd9cd6039138a15f2b"
+          }
+        },
+        {
+          "client_id": "848339876554-v34bb75ljcrhnce69op91459r6bmoj3r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCGJAv2qYGSN2XtXIlLSxpGQHPGTZOdIW8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "848339876554-v34bb75ljcrhnce69op91459r6bmoj3r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
