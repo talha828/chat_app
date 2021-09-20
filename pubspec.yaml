@@ -45,6 +45,12 @@ dependencies:
   http: ^0.13.3
   meet_hour:
   multi_select_item: ^1.0.3
+  time: ^2.0.0
+  geolocator: ^7.6.2
+  url_launcher:
+  get_mac: ^0.0.1
+
+
 
 
 

@@ -13,11 +13,11 @@ import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 
 class Verification extends StatefulWidget {
-  Verification({this.verificationId,this.country,this.name});
+  Verification({this.verificationId,this.country,this.name,this.number});
   final verificationId;
   final country;
   final name;
-
+ final number;
 
   @override
   _VerificationState createState() => _VerificationState();
@@ -32,7 +32,8 @@ class _VerificationState extends State<Verification> {
     CollectionReference users = FirebaseFirestore.instance.collection('user');
     // Call the user's CollectionReference to add a new user
     return users.doc(_auth.currentUser!.uid).update({
-      'Country':widget.country
+      'Country':widget.country,
+      'Number':widget.number
     })
         .then((value) => print("User Added"))
         .catchError((error) => print("Failed to add user: $error"));

@@ -1,7 +1,9 @@
 // @dart=2.9
 
+import 'package:chat_app/chat_screen/chat_search.dart';
 import 'package:chat_app/chat_screen/main_chat_screen.dart';
 import 'package:chat_app/group_search.dart';
+import 'package:chat_app/location/location_page.dart';
 import 'package:chat_app/user_sign_up/login_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';

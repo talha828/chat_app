@@ -1,18 +1,17 @@
 import 'package:chat_app/chat_screen/chat_room.dart';
-import 'package:chat_app/group_search.dart';
+import 'package:chat_app/group_info.dart';
+import 'package:chat_app/location/location_page.dart';
 import 'package:chat_app/safe_box/calculator.dart';
 import 'package:chat_app/call/call_screen.dart';
 import 'package:chat_app/chat_screen/chat_search.dart';
-import 'package:chat_app/chat_screen/list_tile.dart';
+import 'package:chat_app/switch_account.dart';
 import 'package:chat_app/wallet/bit_wallet.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:custom_switch/custom_switch.dart';
-import 'package:rflutter_alert/rflutter_alert.dart';
+
 
 import '../user_sign_up/login_page.dart';
 
@@ -27,13 +26,17 @@ class _ChatScreenState extends State<ChatScreen> {
   CollectionReference users = FirebaseFirestore.instance.collection('user');
   var myName;
   var myImage;
+  var image;
   late String groupName;
   onlineStatus()async{
    final myname =_auth.currentUser!.email;
    print(myname?.replaceAll('@gmail.com', ''));
    myName=myname?.replaceAll('@gmail.com', '');
-  final myData = users.doc(_auth.currentUser!.uid).snapshots();
-    myImage = myData.map((event) => event['image']);
+  final myData = users.doc(_auth.currentUser!.uid).get() ;
+   myImage =await myData.then((value) => value['image']);
+   var now =TimeOfDay.minutesPerHour;
+   print(now);
+
    }
   @override
   void initState() {
@@ -61,7 +64,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     GestureDetector(child: ImageIcon(AssetImage('assets/app_icon.png'),color: Color(0xffc69b68),size: 35,)),
                     GestureDetector(child: ImageIcon(AssetImage('assets/message_icon.png'),color: Colors.white,size: 35,)),
                     GestureDetector(onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context)=>BitWallet()));},child: ImageIcon(AssetImage('assets/dollar_icon.png'),color: Colors.white24,size: 35,)),
-                    GestureDetector( child: ImageIcon(AssetImage('assets/location_icon.png'),color: Colors.white24,size: 35,)),
+                    GestureDetector(onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context)=>LocationPage()));}, child: ImageIcon(AssetImage('assets/location_icon.png'),color: Colors.white24,size: 35,)),
                     GestureDetector(onTap:(){Navigator.push(context, MaterialPageRoute(builder: (context)=>ChatSearch()));},child: ImageIcon(AssetImage('assets/search_icon.png'),color: Colors.white24,size: 40,)),
                     PopupMenuButton(
                         elevation: 3.2,
@@ -78,31 +81,9 @@ class _ChatScreenState extends State<ChatScreen> {
                         [
                           PopupMenuItem(
                             child: GestureDetector(
-                              onTap: (){ Alert(
-                                context: context,
-                                type: AlertType.success,
-                                title: "Write Group Name",
-                                content: TextField(
-                                  textAlign: TextAlign.center,
-                                  decoration: InputDecoration(
-                                    hintText: 'Group Name'
-                                  ),
-                                  onChanged: (value){
-                                    groupName=value;
-                                  },
-                                ),
-                                buttons: [
-                                  DialogButton(
-                                    child: Text(
-                                      "done",
-                                      style:
-                                      TextStyle(color: Colors.white, fontSize: 20),
-                                    ),
-                                    onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context)=>GroupSearch(groupName: groupName,))),
-                                    width: 120,
-                                  )
-                                ],
-                              ).show();},
+                              onTap: (){
+                                Navigator.push(context, MaterialPageRoute(builder: (context)=>GroupInfo()));
+                              },
                               child: Text(
                                 "New Group",
                                 style: TextStyle(
@@ -113,10 +94,15 @@ class _ChatScreenState extends State<ChatScreen> {
                             value: 1,
                           ),
                           PopupMenuItem(
-                            child: Text(
-                              "New Broadcast",
-                              style: TextStyle(
-                                color: Colors.grey[700],
+                            child: GestureDetector(
+                              onTap: (){
+                                   Navigator.push(context, MaterialPageRoute(builder:(context)=>SwitchAccount()));
+                              },
+                              child: Text(
+                                "Switch Account",
+                                style: TextStyle(
+                                  color: Colors.grey[700],
+                                ),
                               ),
                             ),
                             value: 2,
@@ -222,8 +208,9 @@ class _ChatScreenState extends State<ChatScreen> {
                     ),
 
                     child:Container(
+
                       child: StreamBuilder(
-                          stream: FirebaseFirestore.instance.collection('message/${_auth.currentUser!.uid}/userlist').snapshots(),
+                          stream: FirebaseFirestore.instance.collection('message/${_auth.currentUser!.uid}/userList').snapshots(),
                           builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                             if(!snapshot.hasData){
                               return CircularProgressIndicator();
@@ -233,7 +220,10 @@ class _ChatScreenState extends State<ChatScreen> {
                               child: new ListView(
                                   children: snapshot.data!.docs.reversed.map((data) =>  ListTile(
                                     onTap: (){
-                                      Navigator.push(context, MaterialPageRoute(builder: (context)=>ChatRoom(myImage: myImage,myName: myName, userName: data['Name'],userImage: data['Image'],userStatus:status,userUid: data['uid'],)));
+                                      print(data['Name']);
+                                      print(data['uid']);
+
+                                      Navigator.push(context, MaterialPageRoute(builder: (context)=>ChatRoom(myImage: myImage,myName: myName, userName: data['Name'],userImage: data['Image'],userStatus:status,userUid: data['uid'],group: data['group'],)));
                                     },
                                     leading:Stack(
                                       alignment: Alignment.center,
@@ -249,7 +239,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                           decoration: BoxDecoration(
                                             border: Border.all(width: 5,color: Colors.white),
                                             borderRadius: BorderRadius.circular(50),
-                                            image: DecorationImage(image: NetworkImage('${data['Image']}'),fit:BoxFit.cover)
+                                            image: DecorationImage(image: NetworkImage(data['Image']),fit:BoxFit.cover)
                                           ),
                                         ),
 
@@ -273,7 +263,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                       ),),
                                     ),
                                     subtitle: StreamBuilder(
-                                      stream: FirebaseFirestore.instance.collection('message/${_auth.currentUser!.uid}/${data['Name']}').orderBy('timestamp',descending: true).limit(1).snapshots(),
+                                      stream:(data['group']==true)?FirebaseFirestore.instance.collection('message/${data['uid']}/${data['Name']}').orderBy('timestamp',descending: true).limit(1).snapshots() :FirebaseFirestore.instance.collection('message/${_auth.currentUser!.uid}/${data['Name']}').orderBy('timestamp',descending: true).limit(1).snapshots(),
                                     builder:  (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                                         if(!snapshot.hasData){
                                           return CircularProgressIndicator();

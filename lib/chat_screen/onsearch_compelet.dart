@@ -29,6 +29,20 @@ class _FinderState extends State<Finder> {
   var myName;
   var myImage;
   List myList=[];
+  onlineStatus()async{
+    final myname =_auth.currentUser!.email;
+    print(myname?.replaceAll('@gmail.com', ''));
+    myName=myname?.replaceAll('@gmail.com', '');
+    final myData = users.doc(_auth.currentUser!.uid).get() ;
+    myImage =await myData.then((value) => value['image']);
+    print(myImage);
+  }
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    onlineStatus();
+  }
   FirebaseAuth _auth =FirebaseAuth.instance;
 
   start()async{
@@ -50,19 +64,7 @@ class _FinderState extends State<Finder> {
   }
   CollectionReference users = FirebaseFirestore.instance.collection('user');
 
-  onlineStatus()async{
-    final myname =_auth.currentUser!.email;
-    print(myname?.replaceAll('@gmail.com', ''));
-    myName=myname?.replaceAll('@gmail.com', '');
-    final myData = users.doc(_auth.currentUser!.uid).snapshots();
-    myImage = myData.map((event) => event['image']);
-  }
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    onlineStatus();
-  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -148,7 +150,7 @@ class _FinderState extends State<Finder> {
                       child:ListView(
                         children: [ListTile(
                           onTap:(){
-                              Navigator.push(context, MaterialPageRoute(builder: (context)=>ChatRoom(userName: widget.userName,userImage: widget.userImage,userStatus: widget.userStatus,userUid: widget.userUid,myName: myName,myImage: myImage,)));
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=>ChatRoom(userName: widget.userName,userImage: widget.userImage,userStatus: widget.userStatus,userUid: widget.userUid,myName: myName,myImage: myImage,group: false,)));
                           },
                           leading: Stack(children: [
                                         Container(

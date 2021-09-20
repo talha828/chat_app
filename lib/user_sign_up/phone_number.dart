@@ -6,12 +6,15 @@ import 'package:chat_app/material/display_icon.dart';
 import 'package:chat_app/user_sign_up/phone_textField.dart';
 import 'package:chat_app/user_sign_up/security_code.dart';
 import 'package:chat_app/user_sign_up/verification_code.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 class PhoneNumber extends StatefulWidget {
 PhoneNumber({this.name});
 final name;
+
+
   @override
   _PhoneNumberState createState() => _PhoneNumberState();
 }
@@ -39,6 +42,7 @@ class _PhoneNumberState extends State<PhoneNumber> {
               builder: (context) => Verification(verificationId:verificationId,
                 country: country,
                 name: widget.name,
+                number: number,
               )
           );
         },
@@ -48,7 +52,18 @@ class _PhoneNumberState extends State<PhoneNumber> {
           print("Timout");
         });
   }
+  Future<void> addUser() {
+    FirebaseAuth _auth= FirebaseAuth.instance;
+    CollectionReference users = FirebaseFirestore.instance.collection('user');
+    // Call the user's CollectionReference to add a new user
+    return users.doc(_auth.currentUser!.uid).update({
+      'Country':country,
+      'Number':number
+    })
+        .then((value) => print("User Added"))
+        .catchError((error) => print("Failed to add user: $error"));
 
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -92,12 +107,13 @@ class _PhoneNumberState extends State<PhoneNumber> {
                },),
                PhoneTextField(text: '+01 - Number',onChange: (value){
                  setState(() {
-                   number=value;
+                   number=value.trim();
                  });
                },),
                 SizedBox(height: 20,),
               Button(text: 'CONTINUE',icon: Icons.arrow_forward_ios,onPress:  (){if (country !=null && number != null) {
                         register(number);
+                        addUser();
               } else {
                 Alert(
                   context: context,

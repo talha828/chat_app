@@ -12,13 +12,14 @@ import 'package:flutter/material.dart';
 
 
 class ChatRoom extends StatefulWidget {
-  ChatRoom({this.userName, this.userImage,this.userStatus,this.userUid,this.myName, this.myImage});
+  ChatRoom({this.userName, this.userImage,this.userStatus,this.userUid,this.myName, this.myImage,this.group});
   final userName;
   final userImage;
   final userStatus;
   final userUid;
   final myName;
   final myImage;
+  final group;
   @override
   _ChatRoomState createState() => _ChatRoomState();
 }
@@ -229,12 +230,12 @@ class _ChatRoomState extends State<ChatRoom> {
                       borderRadius: BorderRadius.only(
                           topRight: Radius.circular(30),
                           topLeft: Radius.circular(30))),
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
                   height: 100,
                   child: SingleChildScrollView(
                     child: Container(
                       child:StreamBuilder(
-                        stream: FirebaseFirestore.instance.collection('message/${_auth.currentUser!.uid}/${widget.userName}').orderBy('timestamp',descending: true).snapshots(),
+                        stream: (widget.group==true)?FirebaseFirestore.instance.collection('message/${widget.userUid}/${widget.userName}').orderBy('timestamp',descending: true).snapshots():FirebaseFirestore.instance.collection('message/${_auth.currentUser!.uid}/${widget.userName}').orderBy('timestamp',descending: true).snapshots(),
                 builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
 
                           if(!snapshot.hasData){
@@ -248,46 +249,92 @@ class _ChatRoomState extends State<ChatRoom> {
                           title: Column(
                             crossAxisAlignment:(data['uid']==_auth.currentUser!.uid)? CrossAxisAlignment.end:CrossAxisAlignment.start,
                             children: [
-                              Container(
-                                margin: (data['uid']==_auth.currentUser!.uid)? EdgeInsets.only(left: 50):EdgeInsets.only(right: 50),
-                                padding: EdgeInsets.symmetric(vertical: 0,horizontal: 00),
-                                  decoration: BoxDecoration(
-                                    color:(data['uid']==_auth.currentUser!.uid)? Color(0xffefeff2):Color(0xfff1e6c1)
-                                  ),
-                                  child:  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Column(
-                                      crossAxisAlignment:(data['uid']==_auth.currentUser!.uid)?CrossAxisAlignment.end:CrossAxisAlignment.start,
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.all(0),
-                                          child: Text(data['message'],style: TextStyle(
-                                            color: Color(0xff173051),
-                                            fontSize: 22
-                                          ),),
+
+                              Row(
+                                mainAxisAlignment:(data['uid']==_auth.currentUser!.uid)?MainAxisAlignment.end :MainAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 10),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          border: (data['uid']==_auth.currentUser!.uid)?Border.all(color: Colors.white): Border.all(color: Color(0xfff2e7c2) ,width: 3),
+                                          borderRadius: BorderRadius.circular(30)
+                                      ),
+                                      child:(data['uid']==_auth.currentUser!.uid)?null: Container(
+                                        width: 50,
+                                        height: 50,
+                                        decoration: BoxDecoration(
+                                            border: Border.all(width: 5,color: Colors.white),
+                                            borderRadius: BorderRadius.circular(50),
+                                            image: DecorationImage(image: NetworkImage('${data['Image']}'),fit:BoxFit.cover)
                                         ),
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      ),
+
+                                    ),
+                                  ),
+
+                                  Container(
+                                    margin: (data['uid']==_auth.currentUser!.uid)? EdgeInsets.only(left: 30):EdgeInsets.only(right: 30),
+                                    padding: EdgeInsets.symmetric(vertical: 0,horizontal: 00),
+                                      decoration: BoxDecoration(
+                                        color:(data['uid']==_auth.currentUser!.uid)? Color(0xffefeff2):Color(0xfff1e6c1)
+                                      ),
+                                      child:  Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Column(
+                                          crossAxisAlignment:(data['uid']==_auth.currentUser!.uid)?CrossAxisAlignment.end:CrossAxisAlignment.start,
                                           children: [
-                                            Row(
-                                              children: [
-                                                Icon(Icons.messenger,color:Color(0xff173051) ,),
-                                                Text('Translation',style: TextStyle(
-                                                  color:Color(0xff173051),
-                                                  fontSize: 12
-                                                ),),
-                                              ],
+                                            Padding(
+                                              padding: const EdgeInsets.all(8),
+                                              child: Text(data['message'],style: TextStyle(
+                                                color: Color(0xff173051),
+                                                fontSize: 22
+                                              ),),
                                             ),
-                                            Text('11:00 pm',style: TextStyle(
-                                                color:Color(0xff173051),
+                                            Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    Icon(Icons.messenger,color:Color(0xff173051) ,),
+                                                    Text('Translation',style: TextStyle(
+                                                      color:Color(0xff173051),
+                                                      fontSize: 12
+                                                    ),),
+                                                    SizedBox(width: 10,)
+                                                  ],
+                                                ),
+                                                Text('11:00 pm',style: TextStyle(
+                                                    color:Color(0xff173051),
                             fontSize: 12
                         ),)
+                                              ],
+                                            )
                                           ],
-                                        )
-                                      ],
-                                    ),
-                                  )
+                                        ),
+                                      )
 
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 10),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          border:(data['uid']!=_auth.currentUser!.uid)?Border.all(color: Colors.white): Border.all(color: Color(0xfff2e7c2) ,width: 3),
+                                          borderRadius: BorderRadius.circular(30)
+                                      ),
+                                      child:(data['uid']!=_auth.currentUser!.uid)?null: Container(
+                                        width: 50,
+                                        height: 50,
+                                        decoration: BoxDecoration(
+                                            border: Border.all(width: 5,color: Colors.white),
+                                            borderRadius: BorderRadius.circular(50),
+                                            image: DecorationImage(image: NetworkImage('${data['Image']}'),fit:BoxFit.cover)
+                                        ),
+                                      ),
+
+                                    ),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
@@ -339,26 +386,29 @@ class _ChatRoomState extends State<ChatRoom> {
                         child: Row(
                           children: [
                             Expanded(
-                              child: Container(
-                                width: MediaQuery.of(context).size.width / 3,
-                                child: TextField(
-                                  controller: _controller,
-                                  maxLines: 8,
-                                  onChanged: (value){
-                                    message =value.trim();
-                                    if(value.length>0){setState(() {
-                                     iconStatus=true;
-                                   });}
-                                   else{
-                                     setState(() {
-                                       iconStatus=false;
-                                     });
-                                   }
-                                  },
-                                  decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    hintText: 'Write a comment...',
-                                    hintStyle: TextStyle(color: Colors.grey),
+                              child: Padding(
+                                padding: const EdgeInsets.only(right: 10),
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width / 3,
+                                  child: TextField(
+                                    controller: _controller,
+                                    maxLines: 8,
+                                    onChanged: (value){
+                                      message =value.trim();
+                                      if(value.length>0){setState(() {
+                                       iconStatus=true;
+                                     });}
+                                     else{
+                                       setState(() {
+                                         iconStatus=false;
+                                       });
+                                     }
+                                    },
+                                    decoration: InputDecoration(
+                                      border: InputBorder.none,
+                                      hintText: 'Write a comment...',
+                                      hintStyle: TextStyle(color: Colors.grey),
+                                    ),
                                   ),
                                 ),
                               ),
@@ -427,35 +477,62 @@ class _ChatRoomState extends State<ChatRoom> {
                     GestureDetector(
                       onTap: () async{
                         var timestamp=DateTime.now().millisecondsSinceEpoch;
-                        CollectionReference users = FirebaseFirestore.instance.collection('message');
-                        users.doc(_auth.currentUser!.uid).collection(widget.userName).doc().set({
-                          'Name':widget.myName,
-                          'Image':widget.userImage,
-                          'message':message,
-                          'timestamp':timestamp,
-                          'uid':_auth.currentUser!.uid
-                            });
-                        users.doc(widget.userUid).collection(widget.myName).doc().set({
-                          'Name':widget.myName,
-                          'Image':widget.userImage,
-                          'message':message,
-                          'timestamp':timestamp,
-                          'uid':_auth.currentUser!.uid
-                        });
-                        CollectionReference userss = FirebaseFirestore.instance.collection('message');
-                        userss.doc(_auth.currentUser!.uid).collection('userlist').doc(widget.userName).set({
-                          'Name':widget.userName,
-                          'Image':widget.userImage,
-                          'uid':_auth.currentUser!.uid,
-                          'status':widget.userStatus
-                        });
-                        userss.doc(widget.userUid).collection('userlist').doc(widget.myName).set({
-                          'Name':widget.myName,
-                          'Image':widget.userImage,
-                          'uid':_auth.currentUser!.uid,
-                          'status':widget.userStatus
+                        var time=await TimeOfDay.now();
+                        print(time);
+                        print(widget.group);
+                        if(widget.group!=true){
+                          CollectionReference userslist = FirebaseFirestore.instance.collection('message');
+                          userslist.doc(_auth.currentUser!.uid).collection('userList').doc(widget.userName)
+                              .set({
+                            'Name':widget.userName,
+                            'Image':widget.myImage,
+                            'uid':widget.userUid,
+                            'status':widget.userStatus,
+                            'group':'false',
+                          });
+                          print(widget.userUid);
+                          print(_auth.currentUser!.uid);
+                          userslist.doc(widget.userUid).collection('userList').doc(widget.myName).set({
+                            'Name':widget.myName,
+                            'Image':widget.myImage,
+                            'uid':_auth.currentUser!.uid,
+                            'status':widget.userStatus,
+                            'group':'false',
+                          });
+                          CollectionReference users = FirebaseFirestore.instance.collection('message');
+                          users.doc(_auth.currentUser!.uid).collection(widget.userName).doc().set({
+                            'Name':widget.myName,
+                            'Image':widget.myImage,
+                            'message':message,
+                            'uid':_auth.currentUser!.uid,
+                            'group':'false',
+                            'timestamp':timestamp,
+                          });
+                          users.doc(widget.userUid).collection(widget.myName).doc().set({
+                            'Name':widget.myName,
+                            'Image':widget.myImage,
+                            'message':message,
+                            'uid':_auth.currentUser!.uid,
+                            'group':'false',
+                            'timestamp':timestamp,
 
-                        });
+                          });
+                          print(widget.userStatus);
+                          print(_auth.currentUser!.uid);
+                        }
+                        else{
+                          print(widget.userUid);
+                          print(widget.userName);
+                          print(widget.myName);
+                          CollectionReference users = FirebaseFirestore.instance.collection('message');
+                          users.doc('${widget.userUid}').collection(widget.userName).doc().set({
+                            'Name':widget.myName,
+                            'Image':widget.userImage,
+                            'uid':_auth.currentUser!.uid,
+                            'message':message,
+                            'timestamp':timestamp,
+                          });
+                        }
                         _controller.clear();
                         iconStatus=false;},
                       child: Container(
