@@ -129,11 +129,6 @@ class _AccountMakingState extends State<AccountMaking> {
                       print("ON SAVED EJECUTADO");
                       image=img;
                     },
-                    onChanged: (img){
-                   setState(() {
-                     image=img;
-                   });
-                    },
                     cropRatioX: 9,
                     cropRatioY: 16,
                   ) ,

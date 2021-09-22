@@ -4,6 +4,9 @@ import 'package:chat_app/chat_screen/chat_search.dart';
 import 'package:chat_app/chat_screen/main_chat_screen.dart';
 import 'package:chat_app/group_search.dart';
 import 'package:chat_app/location/location_page.dart';
+import 'package:chat_app/safe_box/calculator.dart';
+import 'package:chat_app/safe_box/safe_box_items.dart';
+import 'package:chat_app/safe_box/save_Image.dart';
 import 'package:chat_app/user_sign_up/login_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -24,9 +27,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        backgroundColor: Colors.white,
-        body:ChatScreen(),
+      home: SafeArea(
+        child: Scaffold(
+          backgroundColor: Colors.white,
+          body:SafeImage(),
+        ),
       ),
     );
   }

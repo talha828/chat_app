@@ -1,6 +1,9 @@
+import 'dart:io';
 import 'package:chat_app/safe_box/save_item_list.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+
 
 class SafeBox extends StatefulWidget {
   const SafeBox({Key? key}) : super(key: key);
@@ -10,6 +13,8 @@ class SafeBox extends StatefulWidget {
 }
 
 class _SafeBoxState extends State<SafeBox> {
+
+  SaveFile()async{}
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -61,7 +66,7 @@ class _SafeBoxState extends State<SafeBox> {
                  ),
                  child: ListView(
                    children: [
-                      SaveItem(icon: FontAwesomeIcons.file,title: 'File',subtitle: '123 items save',color: Color(0xfff3c04b),),
+                      SaveItem(onPress: (){SaveFile();}, icon: FontAwesomeIcons.file,title: 'File',subtitle: '123 items save',color: Color(0xfff3c04b),),
                   Divider(thickness: 2,color: Colors.grey.shade300,),
                      SaveItem(icon: FontAwesomeIcons.image,title: 'Photos',subtitle: '123 items save',color: Color(0xffbd58ce),),
                      Divider(thickness: 2,color: Colors.grey.shade300,),
@@ -71,7 +76,7 @@ class _SafeBoxState extends State<SafeBox> {
                      Divider(thickness: 2,color: Colors.grey.shade300,),
                      SaveItem(icon: Icons.messenger,title: 'Message',subtitle: '123 items save',color: Color(0xff4b78e2),),
                      Divider(thickness: 2,color: Colors.grey.shade300,),
-                     SaveItem(icon: Icons.my_location_outlined,title: 'video',subtitle: '123 items save',color: Color(0xff0eaaf4),),
+                     SaveItem(icon: Icons.my_location_outlined,title: 'location',subtitle: '123 items save',color: Color(0xff0eaaf4),),
                      Divider(thickness: 2,color: Colors.grey.shade300,),
                    ],
                  ),

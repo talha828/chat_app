@@ -250,7 +250,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                             radius: 10,
                                             backgroundColor: Colors.white,
                                             child: CircleAvatar(
-                                              radius: 8,
+                                              radius: 5,
                                               backgroundColor:(data['status']==true)?Colors.green:Color(0xffbebebe),
                                             ),
                                           ),
@@ -269,7 +269,9 @@ class _ChatScreenState extends State<ChatScreen> {
                                           return CircularProgressIndicator();
                                         }
 
-                                        return  Text('${snapshot.data!.docs.map((data) => data['message'])}');
+                                        return  Container(
+                                            height:17,
+                                            child: Text('${snapshot.data!.docs.map((data) => data['message'])}'));
                                     },
                                      ),
                                     trailing: Text('11:00'),

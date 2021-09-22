@@ -18,6 +18,9 @@ gradle.projectsEvaluated {
 }
 
 allprojects {
+    tasks.withType(JavaCompile) {
+        options.deprecation = true
+    }
     repositories {
         google()
         jcenter()

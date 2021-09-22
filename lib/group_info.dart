@@ -62,11 +62,6 @@ class _GroupInfoState extends State<GroupInfo> {
                       print("ON SAVED EJECUTADO");
                       image=img;
                     },
-                    onChanged: (img){
-                      setState(() {
-                        image=img;
-                      });
-                    },
                     cropRatioX: 9,
                     cropRatioY: 16,
                   ) ,

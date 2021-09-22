@@ -2,8 +2,11 @@
     package="com.talhaiqbal.chat_app"
     xmlns:tools="http://schemas.android.com/tools">
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission  android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission  android:name="android.permission.INTERNET"  />
     <uses-permission  android:name="android.permission.RECORD_AUDIO"  />
     <uses-permission  android:name="android.permission.CAMERA"  />
@@ -11,6 +14,8 @@
     <uses-permission  android:name="android.permission.ACCESS_NETWORK_STATE"  />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
+
     <!-- The Agora SDK requires Bluetooth permissions in case users are using Bluetooth devices.-->
     <uses-permission  android:name="android.permission.BLUETOOTH"  />
     <queries>
@@ -34,13 +39,18 @@
         android:label="chat_app"
         android:icon="@mipmap/ic_launcher"
         tools:replace="android:label"
-        >
+    >
        <meta-data android:name="com.google.android.geo.API_KEY"
            android:value="AIzaSyAe0MEe1YQpjhH6gru-dN-uiMsRLnW3nNg"/>
         <activity
            android:name="com.yalantis.ucrop.UCropActivity"
            android:screenOrientation="portrait"
-           android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+           android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            tools:replace="android:theme"
+            />
+        <activity android:name="io.flutter.plugins.urllauncher.WebViewActivity"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:exported="false"/>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

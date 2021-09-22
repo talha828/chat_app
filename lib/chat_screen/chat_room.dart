@@ -253,27 +253,30 @@ class _ChatRoomState extends State<ChatRoom> {
                               Row(
                                 mainAxisAlignment:(data['uid']==_auth.currentUser!.uid)?MainAxisAlignment.end :MainAxisAlignment.start,
                                 children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(right: 10),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                          border: (data['uid']==_auth.currentUser!.uid)?Border.all(color: Colors.white): Border.all(color: Color(0xfff2e7c2) ,width: 3),
-                                          borderRadius: BorderRadius.circular(30)
-                                      ),
-                                      child:(data['uid']==_auth.currentUser!.uid)?null: Container(
-                                        width: 50,
-                                        height: 50,
+                                  SingleChildScrollView(
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(right: 10),
+                                      child: Container(
                                         decoration: BoxDecoration(
-                                            border: Border.all(width: 5,color: Colors.white),
-                                            borderRadius: BorderRadius.circular(50),
-                                            image: DecorationImage(image: NetworkImage('${data['Image']}'),fit:BoxFit.cover)
+                                            border: (data['uid']==_auth.currentUser!.uid)?Border.all(color: Colors.white): Border.all(color: Color(0xfff2e7c2) ,width: 3),
+                                            borderRadius: BorderRadius.circular(30)
                                         ),
-                                      ),
+                                        child:(data['uid']==_auth.currentUser!.uid)?null: Container(
+                                          width: 50,
+                                          height: 50,
+                                          decoration: BoxDecoration(
+                                              border: Border.all(width: 5,color: Colors.white),
+                                              borderRadius: BorderRadius.circular(50),
+                                              image: DecorationImage(image: NetworkImage('${data['Image']}'),fit:BoxFit.cover)
+                                          ),
+                                        ),
 
+                                      ),
                                     ),
                                   ),
 
                                   Container(
+
                                     margin: (data['uid']==_auth.currentUser!.uid)? EdgeInsets.only(left: 30):EdgeInsets.only(right: 30),
                                     padding: EdgeInsets.symmetric(vertical: 0,horizontal: 00),
                                       decoration: BoxDecoration(
@@ -286,10 +289,13 @@ class _ChatRoomState extends State<ChatRoom> {
                                           children: [
                                             Padding(
                                               padding: const EdgeInsets.all(8),
-                                              child: Text(data['message'],style: TextStyle(
-                                                color: Color(0xff173051),
-                                                fontSize: 22
-                                              ),),
+                                              child: Container(
+                                                width: 175,
+                                                child: Text(data['message'],style: TextStyle(
+                                                  color: Color(0xff173051),
+                                                  fontSize: 17
+                                                ),),
+                                              ),
                                             ),
                                             Row(
                                               mainAxisAlignment: MainAxisAlignment.spaceBetween,

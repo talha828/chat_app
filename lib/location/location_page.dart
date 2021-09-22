@@ -205,6 +205,8 @@ class _LocationPageState extends State<LocationPage> {
                               child: GestureDetector(
                                 onTap: ()async{
                                     getLocation();
+                                    var _url = 'https://www.google.com/maps/';
+                                    await canLaunch(_url) ? await launch(_url) : throw 'Could not launch $_url';
                                 },
                                 child: CircleAvatar(
                                   backgroundColor:Color(0xf01d4374),
