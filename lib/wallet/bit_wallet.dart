@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:chat_app/chat_screen/chat_search.dart';
 import 'package:chat_app/wallet/coin_card.dart';
 import 'package:chat_app/chat_screen/main_chat_screen.dart';
@@ -8,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:pie_chart/pie_chart.dart';
 
 import 'exchange.dart';
+import 'package:http/http.dart' as http;
 class BitWallet extends StatefulWidget {
   const BitWallet({Key? key}) : super(key: key);
 
@@ -17,10 +20,24 @@ class BitWallet extends StatefulWidget {
 
 class _BitWalletState extends State<BitWallet> {
   Map<String, double> dataMap = {
-    "Bit Coin": 5,
-    "ETH": 3,
-    "DOGE": 2,
+    "Bit Coin": 0,
+    "ETH": 0,
+    "DOGE": 0,
   };
+  getData()async{
+    var url='https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=2&sparkline=false';
+    var response =await http.get(Uri.parse(url));
+    print(response.body);
+    var id=jsonDecode(response.body);
+    var talha=id[0]['image']['current_price'];
+    print(talha);
+  }
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getData();
+  }
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -83,7 +100,8 @@ class _BitWalletState extends State<BitWallet> {
                             Text('My Wallet',style: TextStyle(
                               color: Color(0xff173051),fontSize: 20,
                             ),),
-                            Text('\$27,932.55',style: TextStyle(
+                            SizedBox(height: 10,),
+                            Text('\$ 0',style: TextStyle(
                               color: Color(0xff173051),fontSize: 25,
                             ),),
                           ],

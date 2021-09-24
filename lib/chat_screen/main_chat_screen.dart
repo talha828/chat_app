@@ -36,7 +36,7 @@ class _ChatScreenState extends State<ChatScreen> {
    myImage =await myData.then((value) => value['image']);
    var now =TimeOfDay.minutesPerHour;
    print(now);
-
+print(_auth.currentUser!.uid);
    }
   @override
   void initState() {
@@ -222,7 +222,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                     onTap: (){
                                       print(data['Name']);
                                       print(data['uid']);
-
+                                      print(data['Image']);
                                       Navigator.push(context, MaterialPageRoute(builder: (context)=>ChatRoom(myImage: myImage,myName: myName, userName: data['Name'],userImage: data['Image'],userStatus:status,userUid: data['uid'],group: data['group'],)));
                                     },
                                     leading:Stack(

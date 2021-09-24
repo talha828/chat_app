@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:chat_app/group_search.dart';
 import 'package:chat_app/material/constan_file.dart';
 import 'package:chat_app/user_sign_up/phone_textField.dart';
@@ -18,11 +20,12 @@ class GroupInfo extends StatefulWidget {
 class _GroupInfoState extends State<GroupInfo> {
   late String groupName;
   dynamic image = 'assets/user.png';
+  late  File file;
   late String imageLink='';
   FirebaseAuth _auth=FirebaseAuth.instance;
   GroupDetails()async{
     firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance.ref().child(_auth.currentUser!.uid);
-    var uploadTask = ref.putFile(image);imageLink = await (await uploadTask.whenComplete(() {})).ref.getDownloadURL();
+    var uploadTask = ref.putFile(file);imageLink = await (await uploadTask.whenComplete(() {})).ref.getDownloadURL();
   }
   @override
   Widget build(BuildContext context) {
@@ -60,7 +63,10 @@ class _GroupInfoState extends State<GroupInfo> {
                     errorTextStyle: TextStyle(color: Colors.red),
                     onSaved: (img) {
                       print("ON SAVED EJECUTADO");
-                      image=img;
+                      file=img;
+                    },
+                    onChanged: (img){
+                      file=img;
                     },
                     cropRatioX: 9,
                     cropRatioY: 16,
@@ -88,8 +94,8 @@ class _GroupInfoState extends State<GroupInfo> {
                   text: 'CONTINUE',
                   icon: Icons.arrow_forward_ios,
                   onPress: () async {
-                      if(imageLink!=null&&groupName!=null){
-                        await GroupDetails();
+                    await GroupDetails();
+                    if(imageLink!=null&&groupName!=null){
                         Navigator.push(context, MaterialPageRoute(builder: (context)=>GroupSearch(groupName: groupName,imageLink: imageLink,)));
                       }
                   },

@@ -237,10 +237,7 @@ class _ChatRoomState extends State<ChatRoom> {
                       child:StreamBuilder(
                         stream: (widget.group==true)?FirebaseFirestore.instance.collection('message/${widget.userUid}/${widget.userName}').orderBy('timestamp',descending: true).snapshots():FirebaseFirestore.instance.collection('message/${_auth.currentUser!.uid}/${widget.userName}').orderBy('timestamp',descending: true).snapshots(),
                 builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-
-                          if(!snapshot.hasData){
-                            return CircularProgressIndicator();
-                          }
+                          if(!snapshot.hasData){return CircularProgressIndicator();}
                   return SizedBox(
                     height: 500,
                     child: new ListView(
@@ -491,7 +488,7 @@ class _ChatRoomState extends State<ChatRoom> {
                           userslist.doc(_auth.currentUser!.uid).collection('userList').doc(widget.userName)
                               .set({
                             'Name':widget.userName,
-                            'Image':widget.myImage,
+                            'Image':widget.userImage,
                             'uid':widget.userUid,
                             'status':widget.userStatus,
                             'group':'false',
@@ -508,7 +505,7 @@ class _ChatRoomState extends State<ChatRoom> {
                           CollectionReference users = FirebaseFirestore.instance.collection('message');
                           users.doc(_auth.currentUser!.uid).collection(widget.userName).doc().set({
                             'Name':widget.myName,
-                            'Image':widget.myImage,
+                            'Image':widget.userImage,
                             'message':message,
                             'uid':_auth.currentUser!.uid,
                             'group':'false',

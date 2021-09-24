@@ -192,7 +192,7 @@ class _GroupSearchState extends State<GroupSearch> {
                                                   backgroundColor: Colors.white,
                                                   child: CircleAvatar(
                                                     radius: 8,
-                                                    backgroundColor:(data['group']==true)? Color(0xff52cc56):Colors.blue,
+                                                    backgroundColor:(data['group']==true)? Colors.blue:Color(0xff52cc56),
                                                   ),
                                                 ),
                                               ),]

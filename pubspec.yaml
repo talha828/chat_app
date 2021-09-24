@@ -51,6 +51,7 @@ dependencies:
   get_mac: ^0.0.1
   pattern_lock: ^2.0.0
   gx_file_picker: ^1.9.0+2
+  flt_video_player: ^0.0.4
 
 
 
