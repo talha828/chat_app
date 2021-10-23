@@ -1,6 +1,9 @@
 # chat_app
 
-A new Flutter application.
+this app built on flutter. 
+![i01_Chat Open](https://user-images.githubusercontent.com/61588132/138550899-ea3116a8-fe92-444f-b24b-94ec2078f451.png)
+![i01_Mainpage Chat](https://user-images.githubusercontent.com/61588132/138550914-f44fcc2a-8cda-4827-8e9b-e37f20a94319.png)
+![i01_Mainpage Location](https://user-images.githubusercontent.com/61588132/138550921-9d077ed7-1550-4e66-8c86-4c9575147489.png)
 
 ## Getting Started
 
